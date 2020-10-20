@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Formalmente API",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
@@ -24,13 +25,17 @@
   "dependencies": {
     "awilix": "^4.2.6",
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "dotenv-expand": "^5.1.0",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "cross-env": "^7.0.2"
+    "cross-env": "^7.0.2",
+    "swagger-jsdoc": "^4.3.0",
+    "swagger-ui-express": "^4.1.4"
   }
 }

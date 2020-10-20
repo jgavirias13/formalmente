@@ -1,17 +1,28 @@
-const awilix = require('awilix');
+import awilix from 'awilix';
 const {asClass, asValue, asFunction} = awilix;
 
 const container = awilix.createContainer();
 
-const App = require('./server');
-const config = require('../config/config');
-const Logger = require('../util/logger');
+//Configurations imports
+import App from './server.js';
+import config from '../config/config.js';
+import Logger from '../util/logger.js';
+import Docs from '../config/documentation.js';
 
-//Configurations
+//Routes imports
+import IndexRoute from '../routes/indexRoute.js';
+
+//Configurations registration
 container.register({
     App: asClass(App).singleton(),
     Config: asClass(config).singleton(),
-    Logger: asClass(Logger).singleton()
+    Logger: asClass(Logger).singleton(),
+    Docs: asValue(Docs)
 });
 
-module.exports = container;
+//Routes registration
+container.register({
+    IndexRoute: asClass(IndexRoute).singleton()
+});
+
+export default container;

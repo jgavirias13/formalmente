@@ -1,0 +1,426 @@
+openapi: 3.0.0
+info:
+  description: |
+    Books es un API que te permite ver libros y guardar tus favoritos.
+    Tiene funciones de autenticación y registro de usuarios y de ver
+    libros y agregarlos a favoritos
+  version: "1.0.0"
+  title: Books API
+  contact:
+    email: jgavirias13@gmail.com
+servers:
+# Added by API Auto Mocking Plugin
+  - description: Heroku server
+    url: https://librosback.herokuapp.com/api/v1
+  - description: Local environment
+    url: http://localhost:3000/api/v1
+tags:
+  - name: Autenticacion
+    description: API para realizar el registro de usuarios o el login y obtener un token valido
+  - name: Usuarios
+    description: API para gestionar los usuarios de la aplicación. En la gestión de usuarios no se encuentra la creación debido a que esta se debe realizar mediante el registro por el endpoint de autenticación.
+  - name: Books
+    description: API para consultar los libros de la aplicación, crear uno o agregar uno a favoritos
+paths:
+  /auth/signin:
+    post:
+      tags:
+        - Autenticacion
+      summary: Iniciar sesión y obtener un token
+      operationId: signin
+      responses:
+        '200':
+          description: Autenticación exitosa. Se retorna el token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '404':
+          description: Id de usuario no encontrado
+        '401':
+          description: Autenticación fallida
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+  /auth/signup:
+    post:
+      tags:
+        - Autenticacion
+      summary: Registrar un nuevo usuario
+      operationId: signup
+      responses:
+        '201':
+          description: Registro exitoso. Se retorna el objeto de usuario creado sin el password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: El username ya existe
+      requestBody:
+        $ref: '#/components/requestBodies/UserRegister'
+  /user:
+    get:
+      security:
+        - auth: []
+      tags:
+        - Usuarios
+      summary: Obtener todos los usuarios
+      description: Se retornan todos los usuarios. No se reciben parametros ni es necesario enviar un body. Es necesario estar autenticado para hacer esta operación.
+      operationId: getUsuarios
+      responses:
+        '200':
+          description: Operación exitosa. Se retorna un arreglo con todos los usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  '/user/{userId}':
+    get:
+      security:
+        - auth: []
+      tags:
+        - Usuarios
+      summary: Obtener detalles de un usuario
+      operationId: getUsuario
+      parameters:
+        - name: userId
+          in: path
+          description: ID del usuario. Es un campo obligatorio.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa. Se retorna un objeto con los detalles del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      security:
+        - auth: []
+      tags:
+        - Usuarios
+      summary: Actualizar detalles de un usuario
+      operationId: updateUsuario
+      parameters:
+        - name: userId
+          in: path
+          description: ID del usuario. Es un campo obligatorio.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/UserRegister'
+      responses:
+        '200':
+          description: Operación exitosa. Se envía el usuario acutalizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      security:
+        - auth: []
+      tags:
+        - Usuarios
+      summary: Eliminar un usuario
+      operationId: deleteUsuario
+      parameters:
+        - name: userId
+          in: path
+          description: ID del usuario. Es un campo obligatorio.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa. Se retorna el objeto del usuario eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /libro:
+    get:
+      tags:
+        - Books
+      summary: Obtener todos los libros.
+      description: Para este endpoint no es necesario estar autenticado
+      operationId: getBooks
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Busqueda de palabra clave en titulo, autor o categoria. Es un campo opcional
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      security:
+        - auth: []
+      tags:
+        - Books
+      summary: Crear un libro
+      description: Se debe de envíar en el body del mensaje el libro que se desea crear. Las categorias y el autor del libro son strings libres
+      operationId: createBook
+      requestBody:
+        $ref: '#/components/requestBodies/BookCreate'
+      responses:
+        '200':
+          description: Operación exitosa. Libro creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  '/libro/{libroId}':
+    get:
+      tags:
+        - Books
+      summary: Obtener un libro en especifico
+      description: Para este endpoint no es necesario estar autenticado. Sin embargo, si se está autenticado, se devuelve una propiedad adicional en el objeto libro, la propiedad .isFavorite, que indica en true o false si el libro es favorito o no
+      operationId: getBook
+      parameters:
+        - name: libroId
+          in: path
+          description: ID del libro. Este campo es obligatorio
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    patch:
+      security:
+        - auth: []
+      tags:
+        - Books
+      summary: Actualizar un libro
+      operationId: updateBook
+      parameters:
+        - name: libroId
+          in: path
+          description: ID del libro. Este campo es obligatorio
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/BookCreate'
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      security:
+        - auth: []
+      tags:
+        - Books
+      summary: Eliminar un libro
+      operationId: deleteBook
+      parameters:
+        - name: libroId
+          in: path
+          description: Id del libro. Este campo es obligatorio
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  '/libro/addfavorite/{libroId}':
+    post:
+      security:
+        - auth: []
+      tags:
+        - Books
+      summary: Agregar libro a favoritos
+      description: Se toma el usuario del token enviado y se agrega ese libro a su lista de favoritos
+      parameters:
+        - name: libroId
+          in: path
+          description: Id del libro
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  '/libro/rmfavorite/{libroId}':
+    post:
+      security:
+        - auth: []
+      tags:
+        - Books
+      summary: Eliminar libro de favoritos
+      description: Se toma el usuario del token enviado y se elimina ese libro de su lista de favoritos
+      parameters:
+        - name: libroId
+          in: path
+          description: Id del libro
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpnYXZpcmlhIiwidXNlciI6IjVlNzAyYmIwMzlhZWZiNzdhNjZjNzI1MSIsImlhdCI6MTU4NDQxMzk2MywiZXhwIjoxNTg0NDI4MzYzfQ.iJlqh-G7BmTokpWf6yWnEipNE0pSP-HC9IpYW2JVq4E
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+          example: jgaviria
+        password:
+          type: string
+          example: '12345'
+    UserRegister:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Juan Pablo Gaviria
+        username:
+          type: string
+          example: jgaviria
+        password:
+          type: string
+          example: '12345'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5e703e831180ad5a4a2985e1
+        username:
+          type: string
+          example: jgaviria
+        name:
+          type: string
+          example: Juan Pablo Gaviria
+        favoritos:
+          type: array
+          description: Libros favoritos del usuario
+          items:
+            $ref: '#/components/schemas/Book'
+    Book:
+      type: object
+      required:
+        - nombre
+      properties:
+        id:
+          type: string
+          example: 5e703ad1d5231146431cef12
+        nombre:
+          type: string
+          example: 'Harry Potter'
+        descripcion:
+          type: string
+          example: Colocar un resumen del libro
+        autor:
+          type: string
+          example: J. K. Rowling
+        imagen:
+          type: string
+          description: Url con la ubicación de la imagen
+          example: https://salamandra.info/sites/default/files/styles/book_detail/public/books/covers/hp_y_la_piedra_filosofal.jpg?itok=GWUphIke
+        categorias:
+          type: array
+          description: Categorias del libro (ficción, fantasía etc)
+          items:
+            type: string
+            example: Ficcion
+    BookCreate:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+          example: 'Harry Potter'
+        descripcion:
+          type: string
+          example: Colocar un resumen del libro
+        autor:
+          type: string
+          example: J. K. Rowling
+        imagen:
+          type: string
+          description: Url con la ubicación de la imagen
+          example: https://salamandra.info/sites/default/files/styles/book_detail/public/books/covers/hp_y_la_piedra_filosofal.jpg?itok=GWUphIke
+        categorias:
+          type: array
+          description: Categorias del libro (ficción, fantasía etc)
+          items:
+            type: string
+            example: Ficcion
+  requestBodies:
+    Login:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
+      description: Se debe enviar en el body los detalles de inicio de sesión
+      required: true
+    UserRegister:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRegister'
+      description: Se debe enviar en el body los campos del usuario
+      required: true
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+      description: Usuario a actualizar
+      required: true
+    BookCreate:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookCreate'
+      description: Libro a crear
+      required: true
+  securitySchemes:
+    auth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Ingresa tu token
+security:
+  - auth: []

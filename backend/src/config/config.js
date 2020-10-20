@@ -1,6 +1,8 @@
-const dotenv = require('dotenv');
-const dotenvExpand = require('dotenv-expand');
-const lodash = require('lodash');
+import dotenv from 'dotenv';
+const { config } = dotenv;
+import dotenvExpand from 'dotenv-expand';
+import lodash from 'lodash';
+const { _ } = lodash;
 
 class Config{
     constructor({Logger}){
@@ -12,14 +14,14 @@ class Config{
         this.parms = {};
         this.logger.writeInfo(`Configurando ambiente ${process.env.ENV}`);
         if(process.env.ENV == 'develop'){
-            const unparseParams = dotenv.config();
+            const unparseParams = config();
             this.parms = dotenvExpand(unparseParams).parsed;
         }else{
-            lodash._.each(process.env, (value, key) => {
+            _.each(process.env, (value, key) => {
                 this.parms[key] = value;
             })
         }
     }
 }
 
-module.exports = Config;
+export default Config;

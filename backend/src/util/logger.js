@@ -1,7 +1,8 @@
-const colors = require('colors');
-const moment = require('moment');
+import pkg from 'colors';
+const { setTheme } = pkg;
+import moment from 'moment';
 
-colors.setTheme({
+setTheme({
   info: 'green',
   help: 'magenta',
   warn: 'yellow',
@@ -52,4 +53,4 @@ class Logger{
   }
 }
 
-module.exports = Logger;
+export default Logger;
