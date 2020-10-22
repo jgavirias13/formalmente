@@ -1,7 +1,19 @@
-import container from "./src/server/container.js";
-const server = container.resolve("App");
-const logger = container.resolve("Logger");
-const config = container.resolve("Config");
+import container from './src/server/container.js';
+const server = container.resolve('App');
+const logger = container.resolve('Logger');
+const config = container.resolve('Config');
+const db = container.resolve('Db');
+
+logger.writeInfo('Iniciando el servidor...');
+
+db.connect().then(
+  () => {
+    logger.writeSuccess('Conexion a Base de datos exitosa');
+  }, (err) => {
+    logger.writeError('No se ha podido establecer conexion con la base de datos');
+    logger.writeError(err.message);
+  }
+)
 
 server.start().then(
   () => {
@@ -10,7 +22,7 @@ server.start().then(
     );
   },
   (err) => {
-    logger.writeError("Error presentado al iniciar el servidor");
+    logger.writeError('Error presentado al iniciar el servidor');
     logger.writeError(err.message);
   }
 );

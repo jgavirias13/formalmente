@@ -4,13 +4,15 @@ const {asClass, asValue, asFunction} = awilix;
 const container = awilix.createContainer();
 
 //Configurations imports
-import App from './server.js';
-import config from '../config/config.js';
-import Logger from '../util/logger.js';
+import {Server} from './server.js';
+import {Config} from '../config/config.js';
+import {Logger} from '../util/logger.js';
+import {Db} from './db.js';
 import Docs from '../config/documentation.js';
 
 //Routes imports
-import IndexRoute from '../routes/indexRoute.js';
+import {IndexRoute} from '../routes/indexRoute.js';
+import {UserRoutes} from '../routes/userRoutes.js';
 
 //Models imports
 import User from '../models/user.js';
@@ -28,21 +30,31 @@ import {RequiredFieldException} from '../errors/requiredFieldException.js';
 //Services
 import {BaseService} from '../services/baseService.js';
 import {UserService} from '../services/userService.js';
+import {AuthService} from '../services/authService.js';
 
 //Controllers
-import {UserController} from '../controllers/userController';
+import {UserController} from '../controllers/userController.js';
+import {AuthController} from '../controllers/authController.js';
+
+//Helpers
+import {JwtHelper} from '../helpers/jwtHelper.js';
+
+//Middlewares
+import {ErrorMiddleware} from '../middlewares/errorMiddleware.js';
 
 //Configurations registration
 container.register({
-    App: asClass(App).singleton(),
-    Config: asClass(config).singleton(),
+    App: asClass(Server).singleton(),
+    Config: asClass(Config).singleton(),
     Logger: asClass(Logger).singleton(),
-    Docs: asValue(Docs)
+    Docs: asValue(Docs),
+    Db: asClass(Db).singleton()
 });
 
 //Routes registration
 container.register({
-    IndexRoute: asClass(IndexRoute).singleton()
+    IndexRoute: asClass(IndexRoute).singleton(),
+    UserRoutes: asClass(UserRoutes).singleton()
 });
 
 //Models registration
@@ -58,21 +70,33 @@ container.register({
 
 //Errors registration
 container.register({
-    DuplicatedException: DuplicatedException,
-    NotAuthorizedException: NotAuthorizedException,
-    NotFoundException: NotFoundException,
-    RequiredFieldException: RequiredFieldException
+    DuplicatedException: asClass(DuplicatedException),
+    NotAuthorizedException: asClass(NotAuthorizedException),
+    NotFoundException: asClass(NotFoundException),
+    RequiredFieldException: asClass(RequiredFieldException)
 });
 
 //Services registration
 container.register({
-    BaseService: BaseService,
-    UserService: UserService
+    BaseService: asClass(BaseService).singleton(),
+    UserService: asClass(UserService).singleton(),
+    AuthService: asClass(AuthService).singleton()
 });
 
 //Controllers registration
 container.register({
-    UserController: UserController
+    UserController: asClass(UserController).singleton(),
+    AuthController: asClass(AuthController).singleton()
+});
+
+//Helpers registration
+container.register({
+    JwtHelper: asClass(JwtHelper).singleton()
+});
+
+//Middlewares registration
+container.register({
+    ErrorMiddleware: asClass(ErrorMiddleware).singleton()
 });
 
 export default container;

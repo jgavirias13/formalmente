@@ -1,6 +1,6 @@
 import express from 'express';
 
-class Server {
+export class Server {
   constructor({ Config, IndexRoute }) {
     this.app = express();
     this.config = Config;
@@ -21,4 +21,3 @@ class Server {
   }
 }
 
-export default Server;

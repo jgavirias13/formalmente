@@ -3,7 +3,7 @@ import dotenvExpand from 'dotenv-expand';
 import lodash from 'lodash';
 const { _ } = lodash;
 
-class Config{
+export class Config{
     constructor({Logger}){
         this.logger = Logger;
         this.initConfig();
@@ -23,5 +23,3 @@ class Config{
         }
     }
 }
-
-export default Config;

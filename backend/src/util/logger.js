@@ -10,7 +10,7 @@ setTheme({
   error: 'red'
 });
 
-class Logger{
+export class Logger{
 
   constructor(){
     this.format = 'DD/MM/YYYY hh:mm:ss';
@@ -52,5 +52,3 @@ class Logger{
     );
   }
 }
-
-export default Logger;
