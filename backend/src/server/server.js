@@ -1,16 +1,11 @@
-import express from "express";
+import express from 'express';
 
 class Server {
-  constructor({ Config, Docs }) {
+  constructor({ Config, IndexRoute }) {
     this.app = express();
     this.config = Config;
-    this.documentation = Docs;
-
-    this.app.use(
-      "/api-docs",
-      this.documentation.swaggerUi.serve,
-      this.documentation.swaggerUi.setup(this.documentation.swaggerDocument)
-    );
+    let router = IndexRoute.config();
+    this.app.use(router);
   }
 
   start() {
@@ -19,7 +14,7 @@ class Server {
         .listen(this.config.parms.PORT, () => {
           resolve();
         })
-        .on("error", function (err) {
+        .on('error', function (err) {
           reject(err);
         });
     });

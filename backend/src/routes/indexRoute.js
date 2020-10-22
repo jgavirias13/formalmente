@@ -1,12 +1,24 @@
-import pkg from "express";
-const {Router, json} = pkg;
-import cors from "cors";
+import express from 'express';
+const { Router, json } = express;
+import cors from 'cors';
 
 class IndexRoute {
-  constructor() {
-    this.router = Router();
-    this.router.use(json);
-    this.router.use(cors({ origin: "*" }));
+  constructor({ Docs, Config }) {
+    this.documentation = Docs;
+    this.Config = Config;
+  }
+
+  config() {
+    let router = Router();
+    router.use(cors({ origin: '*' }));
+
+    router.use(
+      '/api-docs',
+      this.documentation.swaggerUi.serve,
+      this.documentation.swaggerUi.setup(this.documentation.swaggerDocument)
+    );
+
+    return router;
   }
 }
 
