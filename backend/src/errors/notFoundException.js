@@ -1,7 +1,7 @@
 export class NotFoundException extends Error{
   constructor(id){
+    super(`Error, ${id} no fue encontrado`);
     this.name = 'NotFoundException';
-    this.message = `Error, ${id} no fue encontrado`;
     this.status = 404;
   }
 }

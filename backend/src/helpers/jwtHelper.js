@@ -6,9 +6,9 @@ export class JwtHelper{
   }
 
   sign(user){
-    data = {
+    const data = {
       user: user
     }
-    return jwt.sign(data, this.Config.JWT_SECRET, {expiresIn: '4h'});
+    return jwt.sign(data, this.Config.parms.JWT_SECRET, {expiresIn: '4h'});
   }
 }

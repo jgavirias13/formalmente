@@ -1,7 +1,7 @@
 export class DuplicatedException extends Error{
   constructor(campo){
+    super(`Error, ${campo} ya existe`)
     this.name = 'DuplicatedException';
-    this.message = `Error, ${campo} ya existe`;
     this.status = 401;
   }
 }

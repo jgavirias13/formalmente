@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-userSchema.methods.toJSON = () => {
+userSchema.methods.toJSON = function() {
   let user = this.toObject();
   delete user.password;
   return user;
@@ -27,7 +27,7 @@ userSchema.methods.comparePassword = async function(password){
   return result;
 }
 
-userSchema.pre('save', async (next) => {
+userSchema.pre('save', async function(next) {
   const user = this;
 
   if(!user.isModified('password')){

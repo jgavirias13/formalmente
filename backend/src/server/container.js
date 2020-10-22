@@ -13,6 +13,7 @@ import Docs from '../config/documentation.js';
 //Routes imports
 import {IndexRoute} from '../routes/indexRoute.js';
 import {UserRoutes} from '../routes/userRoutes.js';
+import {AuthRoutes} from '../routes/authRoutes.js'
 
 //Models imports
 import User from '../models/user.js';
@@ -20,12 +21,6 @@ import User from '../models/user.js';
 //Repositories imports
 import {BaseRepository} from '../repositories/baseRepository.js';
 import {UserRepository} from '../repositories/userRepository.js';
-
-//Errors
-import {DuplicatedException} from '../errors/duplicatedException.js';
-import {NotAuthorizedException} from '../errors/notAuthorizedException.js';
-import {NotFoundException} from '../errors/notFoundException.js';
-import {RequiredFieldException} from '../errors/requiredFieldException.js';
 
 //Services
 import {BaseService} from '../services/baseService.js';
@@ -54,7 +49,8 @@ container.register({
 //Routes registration
 container.register({
     IndexRoute: asClass(IndexRoute).singleton(),
-    UserRoutes: asClass(UserRoutes).singleton()
+    UserRoutes: asClass(UserRoutes).singleton(),
+    AuthRoutes: asClass(AuthRoutes).singleton()
 });
 
 //Models registration
@@ -66,14 +62,6 @@ container.register({
 container.register({
     BaseRepository: asClass(BaseRepository).singleton(),
     UserRepository: asClass(UserRepository).singleton()
-});
-
-//Errors registration
-container.register({
-    DuplicatedException: asClass(DuplicatedException),
-    NotAuthorizedException: asClass(NotAuthorizedException),
-    NotFoundException: asClass(NotFoundException),
-    RequiredFieldException: asClass(RequiredFieldException)
 });
 
 //Services registration

@@ -1,9 +1,10 @@
+import {DuplicatedException} from '../errors/duplicatedException.js';
+import {NotFoundException} from '../errors/notFoundException.js';
+import {InvalidPasswordException} from '../errors/invalidPasswordException.js';
+
 export class AuthService{
-  constructor({UserService, DuplicatedException, NotFoundException, InvalidPasswordException, JwtHelper}){
+  constructor({UserService, JwtHelper}){
     this.UserService = UserService;
-    this.DuplicatedException = DuplicatedException;
-    this.NotFoundException = NotFoundException;
-    this.InvalidPasswordException = InvalidPasswordException;
     this.JwtHelper = JwtHelper;
   }
 
@@ -11,7 +12,7 @@ export class AuthService{
     const email = user.email;
     const userExist = await this.UserService.getUserByEmail(email);
     if(userExist){
-      throw new this.DuplicatedException('Email');
+      throw new DuplicatedException('Email');
     }
 
     return await this.UserService.create(user);
@@ -23,13 +24,13 @@ export class AuthService{
 
     const currentUser = await this.UserService.getUserByEmail(email);
     if(!currentUser){
-      throw new this.NotFoundException('User');
+      throw new NotFoundException('User');
     }
 
-    const validPassword = await userExist.comparePassword(password);
+    const validPassword = await currentUser.comparePassword(password);
 
     if(!validPassword){
-      throw new this.InvalidPasswordException();
+      throw new InvalidPasswordException();
     }
 
     const userInfo = {

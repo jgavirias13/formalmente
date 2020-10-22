@@ -1,14 +1,15 @@
 import express from 'express';
-const { Router, json } = express;
+const { Router } = express;
 import cors from 'cors';
 import pkg from 'express-async-errors';
 
 export class IndexRoute {
-  constructor({ Docs, Config, UserRoutes, ErrorMiddleware }) {
+  constructor({ Docs, Config, UserRoutes, AuthRoutes, ErrorMiddleware }) {
     this.documentation = Docs;
     this.Config = Config;
     this.UserRoutes = UserRoutes;
     this.ErrorMiddleware = ErrorMiddleware;
+    this.AuthRoutes = AuthRoutes;
   }
 
   config() {
@@ -17,8 +18,9 @@ export class IndexRoute {
 
     router.use(cors({ origin: '*' }));
     apiRoutes.use(express.json());
-    
+
     apiRoutes.use('/user', this.UserRoutes.config());
+    apiRoutes.use('/auth', this.AuthRoutes.config());
 
     router.use('/api/v1', apiRoutes);
 
