@@ -17,6 +17,7 @@ export class IndexRoute {
     let apiRoutes = Router();
 
     router.use(cors({ origin: '*' }));
+    //apiRoutes.use(express.urlencoded());
     apiRoutes.use(express.json());
 
     apiRoutes.use('/user', this.UserRoutes.config());

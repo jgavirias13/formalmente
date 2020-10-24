@@ -35,7 +35,8 @@ export class AuthService{
 
     const userInfo = {
       email: currentUser.email,
-      id: currentUser.id
+      id: currentUser.id,
+      role: currentUser.role
     };
 
     const token = this.JwtHelper.sign(userInfo);

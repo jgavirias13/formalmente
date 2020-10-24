@@ -9,6 +9,7 @@ import {Config} from '../config/config.js';
 import {Logger} from '../util/logger.js';
 import {Db} from './db.js';
 import Docs from '../config/documentation.js';
+import {Roles} from '../config/roles.js';
 
 //Routes imports
 import {IndexRoute} from '../routes/indexRoute.js';
@@ -36,6 +37,7 @@ import {JwtHelper} from '../helpers/jwtHelper.js';
 
 //Middlewares
 import {ErrorMiddleware} from '../middlewares/errorMiddleware.js';
+import {AuthMiddleware} from '../middlewares/authMiddleware.js';
 
 //Configurations registration
 container.register({
@@ -43,7 +45,8 @@ container.register({
     Config: asClass(Config).singleton(),
     Logger: asClass(Logger).singleton(),
     Docs: asValue(Docs),
-    Db: asClass(Db).singleton()
+    Db: asClass(Db).singleton(),
+    Roles: asClass(Roles).singleton()
 });
 
 //Routes registration
@@ -84,7 +87,8 @@ container.register({
 
 //Middlewares registration
 container.register({
-    ErrorMiddleware: asClass(ErrorMiddleware).singleton()
+    ErrorMiddleware: asClass(ErrorMiddleware).singleton(),
+    AuthMiddleware: asClass(AuthMiddleware).singleton()
 });
 
 export default container;

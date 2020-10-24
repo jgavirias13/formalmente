@@ -1,10 +1,14 @@
 export class UserController{
-  constructor({UserService}){
+
+  constructor({UserService, AuthMiddleware}){
     this.UserService = UserService;
+    this.resource = 'user';
+    this.AuthMiddleware = AuthMiddleware;
   }
 
   get = async (req, res) => {
     const userId = req.params.userId;
+    this.AuthMiddleware.authorizeToResource(req, userId, 'read', this.resource);
     const user = await this.UserService.get(userId);
 
     return res.send(user);
@@ -19,6 +23,7 @@ export class UserController{
   update = async (req, res) => {
     const body = req.body;
     const userId = req.params.userId;
+    this.AuthMiddleware.authorizeToResource(req, userId, 'update', this.resource);
     const updateUser = await this.UserService.update(userId, body);
 
     return res.send(updateUser);

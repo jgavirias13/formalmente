@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/jgavirias13/formalmente#readme",
   "dependencies": {
+    "accesscontrol": "^2.2.1",
     "awilix": "^4.2.6",
     "bcrypt": "^5.0.0",
     "colors": "^1.4.0",
