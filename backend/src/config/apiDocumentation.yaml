@@ -1,19 +1,14 @@
 openapi: 3.0.0
 info:
   description: |
-    Books es un API que te permite ver libros y guardar tus favoritos.
-    Tiene funciones de autenticación y registro de usuarios y de ver
-    libros y agregarlos a favoritos
-  version: "1.0.0"
-  title: Books API
+    Formalmente es una API con el proposito de servir como Backend para la formalización de documentos en reglas APA
+  version: '1.0.0'
+  title: Formalmente API
   contact:
     email: jgavirias13@gmail.com
 servers:
-# Added by API Auto Mocking Plugin
-  - description: Heroku server
-    url: https://librosback.herokuapp.com/api/v1
   - description: Local environment
-    url: http://localhost:3000/api/v1
+    url: http://localhost:8080/api/v1
 tags:
   - name: Autenticacion
     description: API para realizar el registro de usuarios o el login y obtener un token valido
@@ -301,9 +296,9 @@ components:
     Login:
       type: object
       properties:
-        username:
+        email:
           type: string
-          example: jgaviria
+          example: jgaviria@gmail.com
         password:
           type: string
           example: '12345'
@@ -313,9 +308,9 @@ components:
         name:
           type: string
           example: Juan Pablo Gaviria
-        username:
+        email:
           type: string
-          example: jgaviria
+          example: jgaviria@gmail.com
         password:
           type: string
           example: '12345'
@@ -325,17 +320,12 @@ components:
         id:
           type: string
           example: 5e703e831180ad5a4a2985e1
-        username:
+        email:
           type: string
-          example: jgaviria
+          example: jgaviria@gmail.com
         name:
           type: string
           example: Juan Pablo Gaviria
-        favoritos:
-          type: array
-          description: Libros favoritos del usuario
-          items:
-            $ref: '#/components/schemas/Book'
     Book:
       type: object
       required:
