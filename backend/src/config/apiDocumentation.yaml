@@ -14,8 +14,8 @@ tags:
     description: API para realizar el registro de usuarios o el login y obtener un token valido
   - name: Usuarios
     description: API para gestionar los usuarios de la aplicación. En la gestión de usuarios no se encuentra la creación debido a que esta se debe realizar mediante el registro por el endpoint de autenticación.
-  - name: Books
-    description: API para consultar los libros de la aplicación, crear uno o agregar uno a favoritos
+  - name: Documentos
+    description: API para consultar los documentos de la aplicación, crear uno, eliminarlo o modificarlo
 paths:
   /auth/signin:
     post:
@@ -137,19 +137,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /libro:
+  /document:
     get:
+      security:
+        - auth: []
       tags:
-        - Books
-      summary: Obtener todos los libros.
-      description: Para este endpoint no es necesario estar autenticado
-      operationId: getBooks
-      parameters:
-        - in: query
-          name: search
-          schema:
-            type: string
-          description: Busqueda de palabra clave en titulo, autor o categoria. Es un campo opcional
+        - Documentos
+      summary: Obtener todos los documentos.
+      description: Obtener todos los documentos creados en la aplicacion
+      operationId: getDocuments
       responses:
         '200':
           description: Operación exitosa
@@ -158,25 +154,25 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Book'
+                  $ref: '#/components/schemas/Document'
     post:
       security:
         - auth: []
       tags:
-        - Books
-      summary: Crear un libro
-      description: Se debe de envíar en el body del mensaje el libro que se desea crear. Las categorias y el autor del libro son strings libres
-      operationId: createBook
+        - Documentos
+      summary: Crear un documento
+      description: Crear un documento con toda la informacion que debe de tener en la portada
+      operationId: createDocument
       requestBody:
-        $ref: '#/components/requestBodies/BookCreate'
+        $ref: '#/components/requestBodies/DocumentCreate'
       responses:
         '200':
-          description: Operación exitosa. Libro creado
+          description: Operación exitosa. Documento creado
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-  '/libro/{libroId}':
+                $ref: '#/components/schemas/Document'
+  '/document/{docId}':
     get:
       tags:
         - Books
@@ -326,57 +322,117 @@ components:
         name:
           type: string
           example: Juan Pablo Gaviria
-    Book:
+    Document:
       type: object
       required:
-        - nombre
+        - title
+        - type
+        - owner
       properties:
         id:
           type: string
           example: 5e703ad1d5231146431cef12
-        nombre:
+        title:
           type: string
-          example: 'Harry Potter'
-        descripcion:
+          example: 'Influencia del Age of Empires en los videojuegos'
+        shortTitle:
           type: string
-          example: Colocar un resumen del libro
-        autor:
-          type: string
-          example: J. K. Rowling
-        imagen:
-          type: string
-          description: Url con la ubicación de la imagen
-          example: https://salamandra.info/sites/default/files/styles/book_detail/public/books/covers/hp_y_la_piedra_filosofal.jpg?itok=GWUphIke
-        categorias:
+          example: 'Influencia del Age of Empires'
+        authors:
           type: array
-          description: Categorias del libro (ficción, fantasía etc)
+          description: 'Autores del documento'
           items:
-            type: string
-            example: Ficcion
-    BookCreate:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Juan Pablo Gaviria'
+              afiliation:
+                type: string
+                example: 'Universidad Eafit'
+        university:
+          type: string
+          description: Universidad del estudiante en caso del documento ser de tipo student
+          example: 'Universidad Eafit'
+        course:
+          type: string
+          description: Curso del estudiante en caso del documento ser de tipo student
+          example: 'Investigacion 2'
+        profesor:
+          type: string
+          description: Profesor del curso en caso del documento ser de tipo student
+          example: 'William Gaviria'
+        date:
+          type: string
+          description: Fecha de entrega del documento en caso de ser de tipo student
+          format: date
+          example: '2020-10-25'
+        authorNote:
+          type: string
+          description: Nota del autor en caso del documento ser de tipo profesional
+          example: 'Este es una investigación realizada a fin de ver la influencia del Age en el desarrollo de los videojuegos'
+        type:
+          type: string
+          enum: ['Estudiante', 'Profesional']
+          description: Tipo del documento
+          example: 'Estudiante'
+        owner:
+          type: string
+          example: 5e703ad1d5231146431cef12
+    DocumentCreate:
       type: object
       required:
-        - nombre
+        - title
+        - type
+        - owner
       properties:
-        nombre:
+        title:
           type: string
-          example: 'Harry Potter'
-        descripcion:
+          example: 'Influencia del Age of Empires en los videojuegos'
+        shortTitle:
           type: string
-          example: Colocar un resumen del libro
-        autor:
-          type: string
-          example: J. K. Rowling
-        imagen:
-          type: string
-          description: Url con la ubicación de la imagen
-          example: https://salamandra.info/sites/default/files/styles/book_detail/public/books/covers/hp_y_la_piedra_filosofal.jpg?itok=GWUphIke
-        categorias:
+          example: 'Influencia del Age of Empires'
+        authors:
           type: array
-          description: Categorias del libro (ficción, fantasía etc)
+          description: 'Autores del documento'
           items:
-            type: string
-            example: Ficcion
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'Juan Pablo Gaviria'
+              afiliation:
+                type: string
+                example: 'Universidad Eafit'
+        university:
+          type: string
+          description: Universidad del estudiante en caso del documento ser de tipo student
+          example: 'Universidad Eafit'
+        course:
+          type: string
+          description: Curso del estudiante en caso del documento ser de tipo student
+          example: 'Investigacion 2'
+        profesor:
+          type: string
+          description: Profesor del curso en caso del documento ser de tipo student
+          example: 'William Gaviria'
+        date:
+          type: string
+          description: Fecha de entrega del documento en caso de ser de tipo student
+          format: date
+          example: '2020-10-25'
+        authorNote:
+          type: string
+          description: Nota del autor en caso del documento ser de tipo profesional
+          example: 'Este es una investigación realizada a fin de ver la influencia del Age en el desarrollo de los videojuegos'
+        type:
+          type: string
+          enum: ['Estudiante', 'Profesional']
+          description: Tipo del documento
+          example: 'Estudiante'
+        owner:
+          type: string
+          example: 5e703ad1d5231146431cef12
   requestBodies:
     Login:
       content:
@@ -399,11 +455,11 @@ components:
             $ref: '#/components/schemas/User'
       description: Usuario a actualizar
       required: true
-    BookCreate:
+    DocumentCreate:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/BookCreate'
+            $ref: '#/components/schemas/DocumentCreate'
       description: Libro a crear
       required: true
   securitySchemes:

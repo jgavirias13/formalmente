@@ -4,12 +4,13 @@ import cors from 'cors';
 import pkg from 'express-async-errors';
 
 export class IndexRoute {
-  constructor({ Docs, Config, UserRoutes, AuthRoutes, ErrorMiddleware }) {
+  constructor({ Docs, Config, UserRoutes, AuthRoutes, DocumentRoutes, ErrorMiddleware }) {
     this.documentation = Docs;
     this.Config = Config;
     this.UserRoutes = UserRoutes;
     this.ErrorMiddleware = ErrorMiddleware;
     this.AuthRoutes = AuthRoutes;
+    this.DocumentRoutes = DocumentRoutes;
   }
 
   config() {
@@ -22,6 +23,7 @@ export class IndexRoute {
 
     apiRoutes.use('/user', this.UserRoutes.config());
     apiRoutes.use('/auth', this.AuthRoutes.config());
+    apiRoutes.use('/document', this.DocumentRoutes.config());
 
     router.use('/api/v1', apiRoutes);
 
