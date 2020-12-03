@@ -1,0 +1,28 @@
+@import 'global';
+
+.topbar{
+  transition: background-color .2s linear;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.title{
+  margin-right: 2em;
+}
+
+.username{
+  display: flex;
+  white-space: nowrap;
+}
+
+.myIcon {
+  @include md-icon-size(50px);
+  margin-left: 1em;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

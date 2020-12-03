@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2>Iniciar Sesión</h2>
+      <mat-error *ngIf="loginInvalid">
+        {{message}}
+      </mat-error>
+      <mat-form-field class="full-width-input">
+        <input matInput placeholder="Email" formControlName="username" required>
+        <mat-error>
+          Por favor ingresa un email valido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-input">
+        <input matInput type="password" placeholder="Password" formControlName="password" required>
+        <mat-error>
+          Por favor ingresa un password valido
+        </mat-error>
+      </mat-form-field>
+      <div>
+        <a mat-button href="/signup">¿No tienes usuario? Registrate</a>
+      </div>
+      <button mat-raised-button [disabled]="form.invalid || loading" color="primary">Login</button>
+      <div class="loader" *ngIf="loading">
+        <mat-spinner diameter="15"></mat-spinner>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

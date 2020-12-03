@@ -1,0 +1,29 @@
+<mat-toolbar class="topbar" color="primary">
+  <div fxShow="true" fxHide.gt-sm="true">
+    <mat-icon (click)="inputSideNav.toggle()">menu</mat-icon>  
+  </div>
+  <a href="/home" fxShow="true" fxHide.lt-md="true">
+    <mat-icon svgIcon="logo_formalmente" class="myIcon"></mat-icon>
+  </a>
+  <span class="spacer" fxShow="true" fxHide.gt-sm="true"></span>
+  <span class="title">
+    <a href="/home">Formalmente</a>
+  </span>
+  <div fxShow="true" fxHide.lt-md="true">
+    <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+    <a href="#" mat-button>Documentos</a>
+    <a href="#" mat-button>Ayuda</a>
+  </div>
+  <span class="spacer"></span>
+  <div *ngIf="loggedIn">
+    <span class="mat-small" fxShow="true" fxHide.lt-md="true">{{user.email}}</span>
+    <button mat-icon-button aria-label="Log Out" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="!loggedIn">
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Login" (click)="login()">
+      <mat-icon>login</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
