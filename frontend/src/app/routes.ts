@@ -12,5 +12,9 @@ export const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(mod => mod.HomeModule)
+  },
+  {
+    path: 'document',
+    loadChildren: () => import('./document/document.module').then(mod => mod.DocumentModule)
   }
 ]

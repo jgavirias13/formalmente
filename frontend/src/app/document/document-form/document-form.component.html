@@ -1,0 +1,11 @@
+<h2 class="mat-h2">Nuevo documento</h2>
+<form [formGroup]="form">
+  <mat-form-field>
+    <mat-label>Tipo del Documento</mat-label>
+    <mat-select formControlName="documentType">
+      <mat-option *ngFor="let type of documentTypes" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
