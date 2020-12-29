@@ -1,0 +1,14 @@
+.contenedor{
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario > * {
+  width: 100%;
+}

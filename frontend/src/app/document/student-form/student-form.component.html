@@ -1,0 +1,39 @@
+<div class="contender">
+  <form [formGroup]="form" class="formulario">
+    <mat-form-field>
+      <mat-label>Titulo del articulo</mat-label>
+      <input matInput formControlName="title" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-chip-list #chipList formControlName="students">
+        <mat-chip *ngFor="let student of students.value" [selectable]="selectable"
+          [removable]="removable" (removed)="remove(student)">
+          {{student.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Estudiantes" [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Universidad</mat-label>
+      <input matInput type="text" formControlName="university" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Curso</mat-label>
+      <input matInput type="text" formControlName="course" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Profesor</mat-label>
+      <input matInput type="text" formControlName="profesor" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Fecha</mat-label>
+      <input matInput type="date" formControlName="date" autocomplete="off">
+    </mat-form-field>
+    <button mat-raised-button [disabled]="form.invalid || loading"
+      color="accent" (click)="crearDocumento()">Crear</button>
+  </form>
+</div>

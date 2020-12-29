@@ -1,0 +1,30 @@
+<div class="contender">
+  <form [formGroup]="form" class="formulario">
+    <mat-form-field>
+      <mat-label>Titulo corto del articulo</mat-label>
+      <input matInput formControlName="shortTitle" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Titulo del articulo</mat-label>
+      <input matInput formControlName="title" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Autor</mat-label>
+      <input matInput type="text" formControlName="autor" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Afiliación</mat-label>
+      <input matInput type="text" formControlName="afiliacion" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Nota del autor</mat-label>
+      <textarea matInput formControlName="authorNote"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Fecha</mat-label>
+      <input matInput type="date" formControlName="date" autocomplete="off">
+    </mat-form-field>
+    <button mat-raised-button [disabled]="form.invalid || loading"
+      color="accent" (click)="crearDocumento()">Crear</button>
+  </form>
+</div>

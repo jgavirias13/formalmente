@@ -11,9 +11,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { StudentFormComponent } from './student-form/student-form.component';
+import { ProfesionalFormComponent } from './profesional-form/profesional-form.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [DocumentComponent, DocumentListComponent, DocumentFormComponent],
+  declarations: [DocumentComponent, DocumentListComponent, DocumentFormComponent, StudentFormComponent, ProfesionalFormComponent],
   imports: [
     CommonModule,
     DocumentRoutingModule,
@@ -23,7 +28,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ]
 })
 export class DocumentModule { }

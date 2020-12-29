@@ -1,11 +1,30 @@
-<h2 class="mat-h2">Nuevo documento</h2>
-<form [formGroup]="form">
-  <mat-form-field>
-    <mat-label>Tipo del Documento</mat-label>
-    <mat-select formControlName="documentType">
-      <mat-option *ngFor="let type of documentTypes" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+<div class="contenedor">
+  <button mat-button class="close-icon" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h2 class="mat-h2">Nuevo documento</h2>
+  <form [formGroup]="form">
+    <mat-error *ngIf="creationInvalid">
+      {{message}}
+    </mat-error>
+    <mat-form-field>
+      <mat-label>Tipo del Documento</mat-label>
+      <mat-select formControlName="documentType" (selectionChange)="onDocumentTypeChange($event)">
+        <mat-option *ngFor="let type of documentTypes" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div *ngIf="selectedType == documentTypes[0]">
+    <app-student-form (documentEmitter)="addDocument($event)" [loading]=loading>
+    </app-student-form>
+  </div>
+  <div *ngIf="selectedType == documentTypes[1]">
+    <app-profesional-form (documentEmitter)="addDocument($event)" [loading]=loading>
+    </app-profesional-form>
+  </div>
+  <div class="loader" *ngIf="loading">
+    <mat-spinner diameter="15"></mat-spinner>
+  </div>
+</div>

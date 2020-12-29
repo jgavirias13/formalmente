@@ -15,7 +15,10 @@ export class DocumentListComponent implements OnInit {
   }
 
   openDocumentForm(): void{
-    const dialogRef = this.dialog.open(DocumentFormComponent, {});
+    const dialogRef = this.dialog.open(DocumentFormComponent, {
+      maxWidth: '100%',
+      minWidth: '40%'
+    });
   }
 
 }
